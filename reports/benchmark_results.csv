@@ -1,0 +1,18 @@
+model,MAE,RMSE,MAPE,R2,Med_AE,benchmark
+SARIMA,1.8367,2.5121,12.91,-1.7114,1.1781,Time-Series
+Prophet,1.5698,2.11,11.86,-0.9128,1.4344,Time-Series
+Linear Regression,0.4015,1.115,4.19,0.4658,0.2208,A) Temporal only
+Gradient Boosting,1.1463,1.7699,9.44,-0.3459,0.8846,A) Temporal only
+Diverse Ensemble (GB+LR+Prophet),0.92,1.4501,7.72,0.0965,0.8129,A) Temporal only
+Linear Regression,0.4662,1.1513,4.65,0.4305,0.2885,B) + Weather
+Gradient Boosting,1.0479,1.6947,8.8,-0.234,0.7465,B) + Weather
+Diverse Ensemble (GB+LR+Prophet),0.8618,1.4224,7.38,0.1307,0.7595,B) + Weather
+Linear Regression,0.4975,1.121,4.73,0.46,0.3395,C) + Gust
+Gradient Boosting,1.0613,1.7076,8.89,-0.2528,0.7781,C) + Gust
+Diverse Ensemble (GB+LR+Prophet),0.8277,1.3853,7.13,0.1754,0.7105,C) + Gust
+Linear Regression,0.4805,1.2143,4.91,0.3665,0.3115,D) + Strings
+Gradient Boosting,1.0504,1.6924,8.82,-0.2306,0.8069,D) + Strings
+Diverse Ensemble (GB+LR+Prophet),0.8897,1.4632,7.6,0.0802,0.7309,D) + Strings
+Linear Regression,0.4854,1.1932,4.89,0.3883,0.3134,E) Full
+Gradient Boosting,1.0795,1.7318,9.05,-0.2887,0.8585,E) Full
+Diverse Ensemble (GB+LR+Prophet),0.8845,1.4587,7.57,0.0858,0.7374,E) Full
