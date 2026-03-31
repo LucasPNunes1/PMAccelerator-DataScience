@@ -19,7 +19,7 @@ Instead of jumbled notebooks, this project is structured into **professional, pr
     - `python src/03_forecasting.py`
     - `python src/04_advanced_analysis.py`
 2. **`notebooks/` (Detailed Development):** These Jupyter Notebooks contain the detailed work and the entire thought process that led to the final pipeline. They serve as a more exploratory and complete version of the developed pipeline.
-3. **`reports/presentation.ipynb` (Slide Deck):** **START HERE FOR A VISUAL TOUR!** This presentation acts solely as a high-level summary "slide deck". It provides an organized walkthrough of all 18+ high-resolution charts, maps, and model results created by the pipeline without the code clutter.
+3. **`reports/presentation.ipynb` (Technical Showcase):** **START HERE!** This serves as a high-level summary "Technical Showcase". It provides an organized walkthrough of 25+ charts, global station maps, and ensemble benchmarking results produced by the automated pipeline.
 3. **`data/`**: Stores the raw dataset and the cleaned outputs.
 4. **`models/`**: Saves the finalized best-performing Machine Learning model (`best_model.pkl`).
 5. **`requirements.txt`**: Contains all dependency packages needed to execute the environment. 
