@@ -6,25 +6,22 @@
 ---
 
 ## Project Overview
-This repository contains the complete submission for the **Weather Trend Forecasting** technical assessment. The objective is to analyze the **"Global Weather Repository"** dataset to forecast future weather trends and extract deeply actionable climate insights using both basic data processing and advanced machine learning techniques. 
+This repository contains a data science pipeline designed to analyze and forecast global weather patterns using the **Global Weather Repository** dataset. The project implements a complete end-to-end workflow, from data sanitization and exploratory analysis to predictive modeling and geospatial visualization.
 
-This project fulfills **100% of the Basic and Advanced Assessment requirements**, exploring over 40 features to deliver a robust end-to-end data pipeline. 
+### Repository Structure
+The project is organized into modular Python scripts and Jupyter Notebooks to ensure reproducibility and clarity:
 
-### How Evaluators Should Navigate the Project
-Instead of jumbled notebooks, this project is structured into **professional, production-ready Python pipelines**. 
+1.  **`src/` (Source Code):** Modular scripts for automated execution of the pipeline.
+    *   `data_cleaning.py`: Sanitization and feature engineering.
+    *   `02_eda.py`: Statistical distributions and anomaly detection.
+    *   `03_forecasting.py`: Time-series and regression model training.
+    *   `04_advanced_analysis.py`: Geospatial and environmental correlation modules.
+2.  **`notebooks/`:** Detailed research and development history, containing the exploratory logic behind each pipeline step.
+3.  **`reports/presentation.ipynb`:** A consolidated walkthrough of the project's main findings, including 25+ visualizations and model performance benchmarks.
+4.  **`models/`**: Storage for the serialized best-performing model (`best_model.pkl`).
+5.  **`data/`**: Directories for raw and processed datasets.
 
-1. **`src/` (Source Code):** This contains the 4 core scripts. Run them sequentially to reproduce the entire project from scratch.
-    - `python src/data_cleaning.py`
-    - `python src/02_eda.py`
-    - `python src/03_forecasting.py`
-    - `python src/04_advanced_analysis.py`
-2. **`notebooks/` (Detailed Development):** These Jupyter Notebooks contain the detailed work and the entire thought process that led to the final pipeline. They serve as a more exploratory and complete version of the developed pipeline.
-3. **`reports/presentation.ipynb` (Technical Showcase):** **START HERE!** This serves as a high-level summary "Technical Showcase". It provides an organized walkthrough of 25+ charts, global station maps, and ensemble benchmarking results produced by the automated pipeline.
-3. **`data/`**: Stores the raw dataset and the cleaned outputs.
-4. **`models/`**: Saves the finalized best-performing Machine Learning model (`best_model.pkl`).
-5. **`requirements.txt`**: Contains all dependency packages needed to execute the environment. 
-
-### Installation & Execution
+### Installation & Setup
 ```bash
 # 1. Clone the repository
 git clone <repository_url>
@@ -35,7 +32,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# 3. Run the full pipeline (or explore the presentation.ipynb)
+# 3. Execute the full pipeline
 python src/data_cleaning.py
 python src/02_eda.py
 python src/03_forecasting.py
@@ -44,36 +41,33 @@ python src/04_advanced_analysis.py
 
 ---
 
-## 1. Data Cleaning & Preprocessing (`src/data_cleaning.py`)
-To build a reliable forecasting model, the raw data underwent rigorous sanitization:
-*   **Redundancy Elimination:** Dropped strictly imperial duplicate columns (`temperature_fahrenheit`, `feels_like_fahrenheit`) since models derive the exact same variance from the metric values.
-*   **Sentinel/Placeholder Handling:** Replaced non-numeric placeholders like "No moonset" and arbitrary sensor failures (e.g., `-9999` for Carbon Monoxide) with explicit `NaN` values to prevent mathematical distortion.
-*   **Physical Anomaly Drops:** Filtered out physically impossible glitch records (e.g., `wind_kph > 300` or `pressure_mb < 800`).
-*   **Precipitation Capping:** Extreme rain glitches (> 99.5th percentile) were capped instead of dropped, preserving heavy storm signals without blowing up the regression scale.
-*   **Geographic Standardization:** Forced all string locations to lowercase to fix duplicate grouping errors.
+## 1. Data Preprocessing (`src/data_cleaning.py`)
+The raw dataset was processed to ensure consistency and prevent bias in the models:
+*   **Redundancy Removal:** Dropped duplicate imperial units (Fahrenheit) to focus on metric (Celsius) variance.
+*   **Handling Nulls & Placeholders:** Replaced non-numeric strings (e.g., "No moonset") and placeholder values (e.g., -9999) with `NaN` for appropriate statistical treatment.
+*   **Outlier Management:** Filtered physically improbable records (e.g., extreme wind and pressure anomalies) and applied capping to precipitation spikes to maintain regression scale.
+*   **Standardization:** Normalized categorical strings for consistent grouping across geographic locations.
 
-## 2. Exploratory Data Analysis (EDA) (`src/02_eda.py`)
-Basic explorations validated the climatic distributions:
-*   **Feature Distributions:** Confirmed heavy right-skew logic in precipitation (mostly zero, with rare spikes) vs. the normal distribution of temperature.
-*   **Anomaly Detection (IQR):** Leveraged the Interquartile Range method to isolate abnormal temperature and humidity occurrences, mapping them visually to identify clustering behaviors of severe weather events.
-*   **Correlations:** Analyzed linear relationships between humidity, wind, and air quality indexes.
+## 2. Exploratory Data Analysis (`src/02_eda.py`)
+Statistical exploration of the features included:
+*   **Distribution Analysis:** Comparison between right-skewed precipitation patterns and normal temperature distributions.
+*   **Anomaly Detection:** Implementation of the Interquartile Range (IQR) method to isolate and map abnormal weather occurrences.
+*   **Correlation Mapping:** Analysis of linear relationships between humidity, wind speed, and various air quality indexes.
 
-## 3. Forecasting Models (`src/03_forecasting.py`)
-To forecast the global temporal **Temperature (°C)** trend, we built a **Diverse Machine Learning Ensemble**, evaluating candidates using `RMSE`, `MAE`, `MAPE`, `Median Absolute Error`, and `R²`.
+## 3. Modeling & Forecasting (`src/03_forecasting.py`)
+The objective was to forecast **Temperature (°C)** trends using an ensemble of models with different architectural approaches. Performance was evaluated using RMSE, MAE, and MAPE.
 
-We tested and combined models with fundamentally different logic architectures:
-1.  **Time-Series Base:** `SARIMA` and `Prophet` (Focuses purely on temporal seasonality).
-2.  **Linear Base:** `Linear Regression` (Captures macro linear trends efficiently).
-3.  **Tree-Based:** `Gradient Boosting` (Captures non-linear thresholds like "if humidity spikes AND pressure drops").
-4.  **The Ensemble:** A fused prediction averaging the best models, mitigating individual algorithm bias and increasing generalized accuracy against the hidden test group.
+**Models Implemented:**
+*   **Time-Series:** `SARIMA` and `Prophet` for seasonal pattern detection.
+*   **Linear Regression:** To establish a baseline for macro trends.
+*   **Gradient Boosting:** To capture non-linear interactions between weather variables.
+*   **Weighted Ensemble:** A combined prediction model designed to minimize individual algorithm bias and improve generalization.
 
-## 4. Unique Advanced Analyses (`src/04_advanced_analysis.py`)
-Fulfilling the **Advanced Assessment**, we executed 5 distinct analytical modules:
-
-1.  **Climate Analysis:** Displayed the stark inversion of Temperature and Precipitation trends across the Northern vs. Southern Hemispheres across months, and benchmarked Polar vs. Tropical baselines.
-2.  **Environmental Impact:** Discovered strong statistical bounds between weather and pollution. Higher winds act as natural PM2.5/Carbon Monoxide dispersers, while higher heat directly correlates with increased Ozone levels.
-3.  **Feature Importance:** Cross-validated which features predict temperature best using 3 different mathematical methods: Pearson Correlation, Permutation Importance, and Tree-Impurity. 
-4.  **Spatial Analysis:** Grouped records by strict `latitude` and `longitude` to plot exactly **439 unique weather stations** on a global map, accurately visualizing global distributions of Temperature, UV Index, and PM2.5 air quality without string-overlap corruption.
-5.  **Geographical Patterns:** Consolidated distinct continent insights, measuring average precipitation, winds, and identifying the absolute hottest and coldest cities in the repository.
-
+## 4. Advanced Analytical Modules (`src/04_advanced_analysis.py`)
+Extended analysis beyond basic forecasting:
+*   **Hemispheric Comparison:** Analysis of temperature and precipitation inversion between Northern and Southern hemispheres.
+*   **Environmental Correlations:** Evaluation of weather impacts on air quality (e.g., wind-driven dispersion of PM2.5 and temperature-dependent Ozone levels).
+*   **Feature Importance:** Ranking of predictive variables using Pearson Correlation, Permutation Importance, and Tree-Impurity methods.
+*   **Geospatial Visualization:** Mapping of **439 unique weather stations** using latitude/longitude data to visualize global UV index, temperature, and pollution distributions.
+*   **Climate Baselines:** Identification of extreme values (hottest/coldest) and average precipitation patterns across continents.
 ---
