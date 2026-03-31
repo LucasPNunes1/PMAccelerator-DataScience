@@ -1,7 +1,7 @@
 # Weather Trend Forecasting (PM Accelerator Tech Assessment)
 
 ## PM Accelerator Mission
-> *"The Product Manager Accelerator is designed to support and accelerate the career trajectories of professionals transitioning into and advancing within Product Management, empowering them with the technical, analytical, and strategic skills needed to build better products."*
+> *"The Product Manager Accelerator Program is designed to support PM professionals through every stage of their careers. From students looking for entry-level jobs to Directors looking to take on a leadership role, our program has helped over hundreds of students fulfill their career aspirations."*
 
 ---
 
